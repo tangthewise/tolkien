@@ -5,8 +5,7 @@ class HTMLNode:
         self.children = children
         self.props = props
 
-    def __repr__(self):
-        print("Calling __repr__")
+    def __repr__(self):        
         print(f"HTMLNode({self.tag}. {self.value}. {self.children}. {self.props})")
 
     def to_html(self):
