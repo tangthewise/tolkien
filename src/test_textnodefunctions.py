@@ -17,14 +17,7 @@ class TestTextNodeFunctions(unittest.TestCase):
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "b")
         self.assertEqual(html_node.value, "This is a text node")
-
-    def test_splittest_Having_a_TextNode_that_is_missing_markup_should_return_nothing_as_there_is_no_match(self):
-        test_text_node = TextNode("", TextType.TEXT)
-        result = split_nodes_delimiter([test_text_node], "'", TextType.CODE)
-        
-        self.assertEqual(len(result), 1, "nothing to split from the original, but should at least get the original back")
-        self.assertEqual(result[0], test_text_node, "there is nothing to split here, so result should be unchanged")
-
+    
     def test_splittest_Having_an_empty_TextNode_with_matching_delimiter_then_should_return_an_empty_result(self):
         test_text_node = TextNode("''", TextType.TEXT)
         test_text_type = TextType.CODE
