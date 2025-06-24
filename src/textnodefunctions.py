@@ -54,8 +54,8 @@ def xtract_markdown_images(text):
             return extract_markdown(image_regex, text)
 
 def xtract_markdown_links(text):        
-            image_regex = r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
-            return extract_markdown(image_regex, text)
+            link_regex = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
+            return extract_markdown(link_regex, text)
 
 def extract_markdown(regex, text):
         result = list()
