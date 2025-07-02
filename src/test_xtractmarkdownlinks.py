@@ -1,20 +1,20 @@
 import unittest
 
 from textnode import TextNode, TextType
-from textnodefunctions import xtract_markdown_links
+from textnodefunctions import extract_markdown_links
 
 
 class TestXTractLinkMarkdownFunction(unittest.TestCase):    
 
     def test_initial_empty_result(self):
 
-        result = xtract_markdown_links("")
+        result = extract_markdown_links("")
 
         self.assertEqual(len(result), 0, "the text is empty so nothing to return")
 
     def test_text_that_is_missing_image_detail_should_return_empty(self):
 
-        result = xtract_markdown_links("here is some non markup text")
+        result = extract_markdown_links("here is some non markup text")
 
         self.assertEqual(len(result), 0, "the text has no image markup so nothing to return")
 
@@ -23,7 +23,7 @@ class TestXTractLinkMarkdownFunction(unittest.TestCase):
 
         text = " dev](https://www.boot.dev)"
 
-        result = xtract_markdown_links(text)
+        result = extract_markdown_links(text)
 
         self.assertEqual(len(result), 0, "the text has no valid link markup so nothing to return")
 
@@ -34,7 +34,7 @@ class TestXTractLinkMarkdownFunction(unittest.TestCase):
         test_html_url = "https://www.boot.dev"        
         test_markup = f"[{test_alt_text}]({test_html_url})"
 
-        result = xtract_markdown_links(test_markup)
+        result = extract_markdown_links(test_markup)
 
         self.assertEqual(len(result), 1, "the text contains a single link, so the result should contain a single tuple")
 
@@ -52,7 +52,7 @@ class TestXTractLinkMarkdownFunction(unittest.TestCase):
         test2_url = "https://www.youtube.com/@bootdotdev"
         text = f"This is text with a link [{test_alt_text}]({test_html_url}) and [{test2_alt_text}]({test2_url})"
 
-        result = xtract_markdown_links(text)
+        result = extract_markdown_links(text)
 
         self.assertEqual(len(result), 2, "the text contains multiple images, so the result should contain those images in the list of tuples")
 
