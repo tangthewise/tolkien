@@ -3,27 +3,26 @@ import unittest
 from textnode import TextNode, TextType
 
 
-
 class TestTextNode(unittest.TestCase):
     def test_eq(self):
         node = TextNode("This is a text node", TextType.BOLD)
         node2 = TextNode("This is a text node", TextType.BOLD)
         self.assertEqual(node, node2)
 
-    def test_diff1(self):
-        node = TextNode("This is text node 1", TextType.BOLD)
-        node2 = TextNode("This is text node 2", TextType.BOLD)
-        self.assertNotEqual(node, node2)
+    def test_str(self):
+        node = TextNode("This is a text node", TextType.ITALIC)
+        expected_str = "TextNode(This is a text node, TextType.ITALIC, None)"
+        self.assertEqual(str(node), expected_str)
 
-    def test_diff2(self):
-        node = TextNode("text node", TextType.BOLD)
-        node2 = TextNode("text node", TextType.ITALIC)
-        self.assertNotEqual(node, node2)
+    def test_different_types(self):
+        node1 = TextNode("This is a text node", TextType.BOLD)
+        node2 = TextNode("This is a text node", TextType.ITALIC)
+        self.assertNotEqual(node1, node2)
 
-    def test_diff3(self):
-        node = TextNode(None, TextType.BOLD)
-        node2 = TextNode(None, TextType.ITALIC)
-        self.assertNotEqual(node, node2)
+    def test_equal_including_url(self):
+        node1 = TextNode("This is a text node", TextType.LINK, "http://example.com")
+        node2 = TextNode("This is a text node", TextType.LINK, "http://example.com")
+        self.assertEqual(node1, node2)
 
 
 if __name__ == "__main__":

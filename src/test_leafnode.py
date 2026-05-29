@@ -1,43 +1,20 @@
+from leafnode import LeafNode
 import unittest
 
-from leafnode import LEAFNode
-
-
 class TestLeafNode(unittest.TestCase):
-    def test_emptynode_should_be_invalid_html(self):
-        node = LEAFNode(None)
-        
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+    def test_leaf_to_html_span_with_props(self):
+        node = LeafNode("span", "Important", props={"class": "highlight"})
+        self.assertEqual(node.to_html(), '<span class="highlight">Important</span>')
+
+    def test_leaf_to_html_no_tag(self):
+        node = LeafNode("", "Just text")
+        self.assertEqual(node.to_html(), "Just text")
+
+    def test_leaf_to_html_empty_value(self):
+        node = LeafNode("p", "")
         with self.assertRaises(ValueError):
             node.to_html()
-
-    def test_text_only_node_should_return_raw_text(self):
-        Expected_Result = "here is my node"
-
-        node = LEAFNode(Expected_Result)
-
-        self.assertEqual(Expected_Result, node.to_html())
-    
-    def test_including_tag_should_return_tag_formatted(self):
-        test_tag = "p"
-        test_value = "my own paragraph"        
-        Expected_Result = f"<{test_tag}>{test_value}</{test_tag}>"
-        node = LEAFNode(test_value, test_tag)
-
-        self.assertEqual(Expected_Result, node.to_html())
-
-    def test_including_tag_with_properties_should_return_tag_formatted_ccrectly(self):
-        test_tag = "p"
-        test_value = "my own paragraph"        
-        test_property = "id"
-        test_property_value = "myid"
-        test_properties = {test_property:test_property_value}
-        Expected_Result = f"<{test_tag} {test_property}=\"{test_property_value}\">{test_value}</{test_tag}>"
-        node = LEAFNode(test_value, test_tag, test_properties)
-
-        self.assertEqual(Expected_Result, node.to_html())
-
-
-    
-
-if __name__ == "__main__":
-    unittest.main()

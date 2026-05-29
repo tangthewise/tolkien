@@ -1,26 +1,18 @@
 class HTMLNode:
-    def __init__(self, tag = None, value = None, children = None, props = None):
+    def __init__(self, tag: str = None, value: str = None, children: list['HTMLNode'] = None, props: dict[str, str] = None) -> None:
         self.tag = tag
         self.value = value
-        self.children = children
-        self.props = props
-
-    def __repr__(self):        
-        print(f"HTMLNode({self.tag}. {self.value}. {self.children}. {self.props})")
+        self.children = children if children is not None else []
+        self.props = props if props is not None else {}
 
     def to_html(self):
-      raise NotImplementedError()
-    
-    def _map_prop_to_string(self, prop_name, prop_value):
-        return f" {prop_name}=\"{prop_value}\""
+        raise NotImplementedError("Subclasses must implement to_html method")
 
     def props_to_html(self):
-        properties = list()
-        if self.props != None:
-            for property in self.props:
-                properties.append(self._map_prop_to_string(property, self.props[property]))
-        
-        return "".join(properties)
-    
+        if not self.props:
+            return ""
+        return " " + " ".join(f'{key}="{value}"' for key, value in self.props.items())
 
+    def __repr__(self):
+        return f"HTMLNode(tag={self.tag}, value={self.value}, children={self.children}, props={self.props})"
 
