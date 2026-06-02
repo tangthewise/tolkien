@@ -62,3 +62,71 @@ class TestSplitNodes(unittest.TestCase):
             split_nodes_delimiter(old_nodes, "*", TextType.BOLD)
         
         self.assertIn("Delimiter '*' not found as a matching pair", str(context.exception))
+
+
+
+    class TestSplitNodesImage(unittest.TestCase):
+        def test_split_nodes_image_with_markdown_image(self):
+            from textnode import TextNode, TextType
+
+            old_nodes = [TextNode("This is an image: ![alt text](http://example.com/image.jpg)", TextType.TEXT)]
+            new_nodes = split_nodes_image(old_nodes)
+
+            expected_nodes = [
+                TextNode("This is an image: ", TextType.TEXT),
+                TextNode("alt text", TextType.IMAGE, "http://example.com/image.jpg")
+            ]
+
+            self.assertEqual(new_nodes, expected_nodes)
+
+
+        def test_split_images(self):
+            node = TextNode("This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",TextType.TEXT,)
+            new_nodes = split_nodes_image([node])
+            
+            self.assertListEqual(
+                        [
+                            TextNode("This is text with an ", TextType.TEXT),
+                            TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+                            TextNode(" and another ", TextType.TEXT),
+                            TextNode("second image", TextType.IMAGE, "https://i.imgur.com/3elNhQu.png"),
+                        ],
+                        new_nodes
+                        )
+
+
+        def test_split_nodes_image_with_no_markdown_image(self):
+            from textnode import TextNode, TextType
+
+            old_nodes = [TextNode("This is a plain text", TextType.TEXT)]
+            new_nodes = split_nodes_image(old_nodes)
+
+            expected_nodes = [TextNode("This is a plain text", TextType.TEXT)]
+
+            self.assertEqual(new_nodes, expected_nodes)
+
+
+
+        class TestSplitNodesLink(unittest.TestCase):
+            def test_split_nodes_link_with_markdown_link(self):
+                from textnode import TextNode, TextType
+
+                old_nodes = [TextNode("This is a link: [link text](http://example.com)", TextType.TEXT)]
+                new_nodes = split_nodes_link(old_nodes)
+
+                expected_nodes = [
+                    TextNode("This is a link: ", TextType.TEXT),
+                    TextNode("link text", TextType.LINK, "http://example.com")
+                ]
+
+                self.assertEqual(new_nodes, expected_nodes)
+
+            def test_split_nodes_link_with_no_markdown_link(self):
+                from textnode import TextNode, TextType
+
+                old_nodes = [TextNode("This is a plain text", TextType.TEXT)]
+                new_nodes = split_nodes_link(old_nodes)
+
+                expected_nodes = [TextNode("This is a plain text", TextType.TEXT)]
+
+                self.assertEqual(new_nodes, expected_nodes)
