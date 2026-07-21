@@ -2,6 +2,38 @@ import unittest
 
 
 class TestExtractFromMarkdown(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        from split_nodes import markdown_to_blocks
+
+        md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_to_blocks_strips_and_removes_empty_blocks(self):
+        from split_nodes import markdown_to_blocks
+
+        md = "\n\n  First block  \n\n\nSecond block\n\n   \n\nThird block   \n\n"
+
+        self.assertEqual(
+            markdown_to_blocks(md),
+            ["First block", "Second block", "Third block"],
+        )
+
     def test_extract_images_from_markdown(self):
         from split_nodes import extract_markdown_images
         

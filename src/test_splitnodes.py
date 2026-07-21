@@ -1,6 +1,6 @@
 import unittest
 
-from split_nodes import split_nodes_delimiter
+from split_nodes import split_nodes_delimiter, text_to_textnodes
 
 class TestSplitNodes(unittest.TestCase):
     def test_split_nodes_with_basic_bold_delimiter(self):
@@ -62,6 +62,26 @@ class TestSplitNodes(unittest.TestCase):
             split_nodes_delimiter(old_nodes, "*", TextType.BOLD)
         
         self.assertIn("Delimiter '*' not found as a matching pair", str(context.exception))
+
+    def test_text_to_textnodes_example(self):
+        from textnode import TextNode, TextType
+
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+
+        expected_nodes = [
+            TextNode("This is ", TextType.TEXT),
+            TextNode("text", TextType.BOLD),
+            TextNode(" with an ", TextType.TEXT),
+            TextNode("italic", TextType.ITALIC),
+            TextNode(" word and a ", TextType.TEXT),
+            TextNode("code block", TextType.CODE),
+            TextNode(" and an ", TextType.TEXT),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT),
+            TextNode("link", TextType.LINK, "https://boot.dev"),
+        ]
+
+        self.assertEqual(text_to_textnodes(text), expected_nodes)
 
 
 
