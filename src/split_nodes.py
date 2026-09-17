@@ -171,7 +171,7 @@ def code_to_html_node(block: str) -> HTMLNode:
 
 def quote_to_html_node(block: str) -> HTMLNode:
     lines = [re.sub(r"^> ?", "", line) for line in block.split("\n")]
-    text = " ".join(lines)
+    text = " ".join(line for line in lines if line.strip())
     return ParentNode("blockquote", text_to_children(text))
 
 
